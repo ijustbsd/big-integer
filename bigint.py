@@ -1,233 +1,140 @@
-from typing import Tuple
+from long_math import l_add, l_divmod, l_mul, l_sub
 
 
-def l_min(s1: str, s2: str) -> str:
-    l1 = len(s1)
-    l2 = len(s2)
+class BigInt:
 
-    if l1 < l2:
-        return s1
-    elif l2 < l1:
-        return s2
+    def __init__(self, value='0'):
+        if not isinstance(value, str):
+            t = type(value).__name__
+            raise TypeError(f'BigInt() argument must be a string, not "{t}"')
 
-    for x, y in zip(s1, s2):
-        if x < y:
-            return s1
-        elif x > y:
-            return s2
+        if value == '-0':
+            value = '0'
 
-    return s1
-
-
-def less_than(s1: str, s2: str) -> bool:
-    l1 = len(s1)
-    l2 = len(s2)
-
-    if l1 < l2:
-        return True
-    elif l2 < l1:
-        return False
-
-    for x, y in zip(s1, s2):
-        if x < y:
-            return True
-        elif x > y:
-            return False
-
-    return False
-
-
-def add(s1: str, s2: str) -> str:
-    l1 = len(s1)
-    l2 = len(s2)
-
-    m = max(l1, l2)
-
-    k = int((m - 1) / 9 + 1)
-
-    n = 9 * k
-
-    s1 = s1.zfill(n)
-    s2 = s2.zfill(n)
-
-    w = 0
-    base = 10 ** 9
-
-    s3 = ''
-    for i in range(1, k + 1):
-        start = n - 9
-        a = int(s1[start:n])
-        b = int(s2[start:n])
-
-        c = a + b + w
-
-        if c < base:
-            z = c
-            w = 0
-        else:
-            z = c - base
-            w = 1
-
-        s = str(z)
-        s = s.zfill(9)
-
-        s3 = s + s3
-        n -= 9
-
-    if w == 1:
-        s3 = '1' + s3
-
-    s3 = s3.lstrip('0')
-
-    return s3 or '0'
-
-
-def sub(s1: str, s2: str) -> str:
-    l1 = len(s1)
-    l2 = len(s2)
-
-    m = max(l1, l2)
-
-    k = int((m - 1) / 9 + 1)
-
-    n = 9 * k
-
-    s1 = s1.zfill(n)
-    s2 = s2.zfill(n)
-
-    w = 0
-    base = 10 ** 9
-
-    s3 = ''
-    for i in range(1, k + 1):
-        start = n - 9
-        a = int(s1[start:n])
-        b = int(s2[start:n])
-
-        c = a - b - w
-
-        if c >= 0:
-            z = c
-            w = 0
-        else:
-            z = c + base
-            w = 1
-
-        s = str(z)
-        s = s.zfill(9)
-
-        s3 = s + s3
-        n -= 9
-
-    s3 = s3.lstrip('0')
-
-    return s3 or '0'
-
-
-def mul(s1: str, s2: str) -> str:
-    l1 = len(s1)
-    l2 = len(s2)
-
-    m = max(l1, l2)
-
-    k = int((m - 1) / 4 + 1)
-
-    n = 4 * k
-
-    s1 = s1.zfill(n)
-    s2 = s2.zfill(n)
-
-    base = 10 ** 4
-    st = '0'
-
-    n1 = n
-    for j in range(1, k + 1):
-
-        b = int(s2[n1-4:n1])
-
-        n2 = n
-        w = 0
-        s3 = ''
-        for i in range(1, k + 1):
-            a = int(s1[n2-4:n2])
-
-            c = a * b + w
-
-            if c < base:
-                z = c
-                w = 0
-            else:
-                z = c % base
-                w = int(c / base)
-
-            s = str(z)
-            s = s.zfill(4)
-
-            s3 = s + s3
-            n2 -= 4
-
-        if w != 0:
-            s3 = str(w) + s3
-
-        s3 += '0' * (4 * (j - 1))
-
-        st = add(st, s3)
-
-        n1 -= 4
-
-    st = st.lstrip('0') or '0'
-
-    return st
-
-
-def l_divmod(s1: str, s2: str) -> Tuple[str, str]:
-    l1 = len(s1)
-    l2 = len(s2)
-
-    s3 = ''
-
-    index = l2
-
-    curr_div = s1[:index]
-    if less_than(curr_div, s2):
-        index += 1
-        curr_div = s1[:index]
-    old_div = curr_div
-
-    while less_than(s2, curr_div) or s2 == curr_div:
-
-        i = 0
-        while less_than(s2, curr_div) or s2 == curr_div:
-            curr_div = sub(curr_div, s2)
-            i += 1
-
-        s3 += str(i)
-
-        old_div = curr_div
-        if len(s2) == len(old_div):
-            curr_div += s1[index: index + 1]
-            index += 1
-        else:
-            curr_div += s1[index: index + l2 - len(old_div)]
-            index += l2 - len(old_div)
-
-        s3 += '0' * (len(curr_div) - len(old_div) - 1)
-
-        if less_than(curr_div, s2) and index < l1:
-            curr_div += s1[index:index + 1]
-            index += 1
-            s3 += '0'
-
-    if len(old_div) < len(curr_div):
-        s3 += '0'
-
-    return s3 or '0', curr_div
-
-
-def main():
-    print(divmod(12 ** 34, 56 * 78))
-    print(l_divmod(str(12 ** 34), str(56 * 78)))
+        self.is_neg = value[0] == '-'
+        self.value = value[self.is_neg:]
+
+        if not self.value.isdigit():
+            raise TypeError(f'invalid argument for BigInt(): "{value}"')
+
+    def __abs__(self):
+        return BigInt(self.value)
+
+    def __bool__(self):
+        return self.value != '0'
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return ('-' if self.is_neg else '') + self.value
+
+    def __len__(self):
+        return len(self.value)
+
+    def __eq__(self, other):
+        if isinstance(other, int):
+            other = BigInt(str(other))
+        return self.value == other.value and self.is_neg == other.is_neg
+
+    def __ne__(self, other):
+        if isinstance(other, int):
+            other = BigInt(str(other))
+        return not self == other
+
+    def __lt__(self, other):
+        if self.is_neg == other.is_neg:
+            self_len = len(self)
+            other_len = len(other)
+            if self_len == other_len:
+                return (self.value < other.value) ^ self.is_neg
+            return (self_len < other_len) ^ self.is_neg
+        return self.is_neg
+
+    def __le__(self, other):
+        return self < other or self == other
+
+    def __gt__(self, other):
+        return not self <= other
+
+    def __ge__(self, other):
+        return not self < other
+
+    def __pos__(self):
+        return BigInt(('-' if self.is_neg else '') + self.value)
+
+    def __neg__(self):
+        return BigInt(('' if self.is_neg else '-') + self.value)
+
+    def __add__(self, other):
+        if self.is_neg == other.is_neg:
+            result = l_add(self.value, other.value)
+            return BigInt(('-' if self.is_neg else '') + result)
+        x, y = sorted((abs(self), abs(other)))
+        neg = max((self, other), key=lambda e: abs(e)).is_neg
+        return BigInt(('-' if neg else '') + (y - x).value)
+
+    def __sub__(self, other):
+        if not self.is_neg and not other.is_neg:
+            y, x = sorted((self, other))
+            result = l_sub(x.value, y.value)
+            return BigInt(('-' if self < other else '') + result)
+
+        if self.is_neg and not other.is_neg:
+            return BigInt('-' + (abs(self) + abs(other)).value)
+
+        if not self.is_neg and other.is_neg:
+            return BigInt((abs(self) + abs(other)).value)
+
+        if self.is_neg and other.is_neg:
+            return self + abs(other)
+
+    def __mul__(self, other):
+        result = l_mul(self.value, other.value)
+        return BigInt(('-' if self.is_neg != other.is_neg else '') + result)
+
+    def __truediv__(self, other):
+        if other.value == '0':
+            raise ZeroDivisionError('division by zero')
+        result = l_divmod(self.value, other.value)[0]
+        return BigInt(('' if self.is_neg == other.is_neg else '-') + result)
+
+    def __mod__(self, other):
+        if other.value == '0':
+            raise ZeroDivisionError('division by zero')
+        mod = l_divmod(self.value, other.value)[1]
+        mod = BigInt(mod)
+
+        return {
+            not self.is_neg and not other.is_neg: mod,
+            self.is_neg and not other.is_neg: other - mod,
+            not self.is_neg and other.is_neg: mod + other,
+            self.is_neg and other.is_neg: -mod
+        }[True]
 
 
 if __name__ == '__main__':
-    main()
+    x = BigInt(input('Введите первое число (x): '))
+    y = BigInt(input('Введите второе число (y): '))
+    menu_text = '\n'.join([
+        'Выберите действие:',
+        '1) x + y',
+        '2) x - y',
+        '3) x * y',
+        '4) x / y',
+        '5) x mod y'
+    ])
+    print(menu_text)
+    choice = input()
+    if choice == '1':
+        print('x + y =', x + y)
+    elif choice == '2':
+        print('x - y =', x - y)
+    elif choice == '3':
+        print('x * y =', x * y)
+    elif choice == '4':
+        print('x / y =', x / y)
+    elif choice == '5':
+        print('x mod y =', x % y)
+    else:
+        print('Выбрано несуществующее значение :(')
