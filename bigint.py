@@ -105,6 +105,9 @@ class BigInt:
         mod = l_divmod(self.value, other.value)[1]
         mod = BigInt(mod)
 
+        if mod.value == '0':
+            return mod
+
         return {
             not self.is_neg and not other.is_neg: mod,
             self.is_neg and not other.is_neg: other - mod,
