@@ -1,0 +1,42 @@
+\documentclass[14pt, a4paper]{extarticle}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{indentfirst, microtype, listings, pdfpages, color}
+\usepackage[unicode, colorlinks=true, allcolors=black]{hyperref}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\definecolor{green}{RGB}{0,150,36}
+
+\lstset{
+    language=Python,
+    basicstyle=\small\ttfamily,
+    columns=fullflexible,
+    inputpath=../,
+    numbers=left,
+    numberstyle=\footnotesize\color{gray},
+    commentstyle=\color{green},
+    keywordstyle=\color{blue},
+    showstringspaces=\false,
+    extendedchars=\true
+}
+
+\usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage[style=gost-numeric, sorting=none]{biblatex}
+\addbibresource{diplom.bib}
+
+\newtheorem{definition}{Определение}
+
+
+\begin{document}
+
+\includepdf{tp-output.pdf}
+
+\tableofcontents
+
+\include{main}
+
+\end{document}

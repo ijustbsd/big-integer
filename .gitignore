@@ -4,4 +4,18 @@
 __pycache__
 .mypy_cache
 
+*.aux
+*.log
+*.out
+*.toc
+
+*.bbl
+*.bcf
+*.blg
+*.xml
+
 *.pdf
+!report/pdfs/*.
+!report/report.pdf
+
+tp-output.fodt
