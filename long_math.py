@@ -6,6 +6,9 @@ def dec_to_bin(s1: str) -> str:
 
 
 def less_than(s1: str, s2: str) -> bool:
+    s1 = s1.lstrip('0') or '0'
+    s2 = s2.lstrip('0') or '0'
+
     l1 = len(s1)
     l2 = len(s2)
 
