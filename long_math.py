@@ -1,6 +1,10 @@
 from typing import Tuple
 
 
+def dec_to_bin(s1: str) -> str:
+    return bin(int(s1))[2:]
+
+
 def less_than(s1: str, s2: str) -> bool:
     l1 = len(s1)
     l2 = len(s2)
@@ -150,3 +154,15 @@ def l_divmod(s1: str, s2: str) -> Tuple[str, str]:
     if len(old_div) < len(curr_div):
         s3 += '0'
     return s3 or '0', curr_div
+
+
+def l_pow(s1: str, s2: str):
+    if s2 == '0':
+        return '1'
+    b = dec_to_bin(s2)
+    z = s1
+    for i in range(1, len(b)):
+        z = l_mul(z, z)
+        if b[i] == '1':
+            z = l_mul(z, s1)
+    return z

@@ -1,4 +1,4 @@
-from long_math import l_add, l_divmod, l_mul, l_sub
+from long_math import l_add, l_divmod, l_mul, l_pow, l_sub
 
 
 class BigInt:
@@ -114,6 +114,12 @@ class BigInt:
             not self.is_neg and other.is_neg: mod + other,
             self.is_neg and other.is_neg: -mod
         }[True]
+
+    def __pow__(self, other):
+        result = l_pow(self.value, other.value)
+        if int(other.value[-1]) % 2:
+            return BigInt(('-' if self.is_neg else '') + result)
+        return BigInt(result)
 
 
 if __name__ == '__main__':
