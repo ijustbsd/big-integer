@@ -156,7 +156,8 @@ def l_divmod(s1: str, s2: str) -> Tuple[str, str]:
             s3 += '0'
     if len(old_div) < len(curr_div):
         s3 += '0'
-    return s3 or '0', curr_div
+    curr_div = curr_div.lstrip('0')
+    return s3 or '0', curr_div or '0'
 
 
 def l_pow(s1: str, s2: str):
