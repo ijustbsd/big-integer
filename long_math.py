@@ -170,3 +170,18 @@ def l_pow(s1: str, s2: str):
         if b[i] == '1':
             z = l_mul(z, s1)
     return z
+
+
+def l_root(s1: str, s2: str):
+    if s1 == '0':
+        return s1
+    if s2 == '1':
+        return s1
+    s2_1 = l_sub(s2, '1')
+    x = s1
+    while True:
+        z = x
+        # x = ((s2_1 * x) + (s1 / (x ** s2_1))) / s2
+        x = l_divmod(l_add(l_mul(s2_1, x), l_divmod(s1, l_pow(x, s2_1))[0]), s2)[0]
+        if z == x or less_than(z, x):
+            return z

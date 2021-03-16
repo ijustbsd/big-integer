@@ -2,8 +2,8 @@ import unittest
 from random import randint
 
 from bigint import BigInt
-from long_math import (dec_to_bin, l_add, l_divmod, l_mul, l_pow, l_sub,
-                       less_than)
+from long_math import (dec_to_bin, l_add, l_divmod, l_mul, l_pow, l_root,
+                       l_sub, less_than)
 
 
 class TestLongMath(unittest.TestCase):
@@ -42,6 +42,12 @@ class TestLongMath(unittest.TestCase):
             x = randint(0, 1000)
             y = randint(0, 1000)
             self.assertEqual(str(x ** y), l_pow(str(x), str(y)))
+
+    def test_root(self):
+        for _ in range(100):
+            x = randint(0, 100)
+            y = randint(1, 100)
+            self.assertEqual(str(int(x ** (1 / y))), l_root(str(x), str(y)))
 
     def test_dec_to_bin(self):
         for _ in range(self.TESTS_COUNT):
@@ -103,11 +109,19 @@ class TestBigInt(unittest.TestCase):
 
     def test_pow(self):
         for _ in range(100):
-            x = randint(-1000, 1000)
-            y = randint(0, 1000)
+            x = randint(-100, 100)
+            y = randint(0, 100)
             big_x = BigInt(str(x))
             big_y = BigInt(str(y))
             self.assertEqual(x ** y, big_x ** big_y)
+
+    def test_root(self):
+        for _ in range(100):
+            x = randint(0, 100)
+            y = randint(1, 100)
+            big_x = BigInt(str(x))
+            big_y = BigInt(str(y))
+            self.assertEqual(int(x ** (1 / y)), big_x.root(big_y))
 
 
 if __name__ == '__main__':

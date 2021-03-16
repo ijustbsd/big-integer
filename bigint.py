@@ -1,4 +1,4 @@
-from long_math import l_add, l_divmod, l_mul, l_pow, l_sub
+from long_math import l_add, l_divmod, l_mul, l_pow, l_root, l_sub
 
 
 class BigInt:
@@ -119,6 +119,10 @@ class BigInt:
         result = l_pow(self.value, other.value)
         if int(other.value[-1]) % 2:
             return BigInt(('-' if self.is_neg else '') + result)
+        return BigInt(result)
+
+    def root(self, other):
+        result = l_root(self.value, other.value)
         return BigInt(result)
 
 
