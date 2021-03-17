@@ -172,6 +172,8 @@ class BigInt:
 
     @staticmethod
     def ring_inv(x, n):
+        if x.value == '1':
+            return x
         d, v, u = BigInt.gcd(x, n)
         if d != BigInt('1'):
             return None
