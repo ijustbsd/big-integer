@@ -175,7 +175,7 @@ class TestBigInt(unittest.TestCase):
     def test_ring_inv(self):
         values = [
             ('873372847093', str(10 ** 12), '94559444997'),
-            ('6', '3', None),
+            ('3', '6', None),
         ]
         for *args, x in values:
             args = list(map(BigInt, args))
