@@ -262,6 +262,8 @@ if __name__ == '__main__':
 
     if int(choice) < 1 or int(choice) > 13:
         print('Выбрано несуществующее значение :(')
+        input('Для выхода нажмите Enter...')
+        exit(0)
 
     x = BigInt(input('Введите первое число (x): '))
     if choice != '12':
@@ -284,7 +286,7 @@ if __name__ == '__main__':
     elif choice == '7':
         print('Корень из X степени Y = ', BigInt.root(x, y))
     elif choice == '8':
-        print('НОД(x, y) =', BigInt.gcd(x, y))
+        print('НОД(x, y), u, v =', *BigInt.gcd(x, y))
     elif choice == '9':
         print('(x + y) mod N =', BigInt.ring_add(x, y, n))
     elif choice == '10':
