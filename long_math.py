@@ -26,6 +26,12 @@ def less_than(s1: str, s2: str) -> bool:
     return False
 
 
+def is_equal(s1: str, s2: str) -> bool:
+    s1 = s1.lstrip('0') or '0'
+    s2 = s2.lstrip('0') or '0'
+    return s1 == s2
+
+
 def l_add(s1: str, s2: str) -> str:
     l1 = len(s1)
     l2 = len(s2)
@@ -136,9 +142,9 @@ def l_divmod(s1: str, s2: str) -> Tuple[str, str]:
         index += 1
         curr_div = s1[:index]
     old_div = curr_div
-    while less_than(s2, curr_div) or s2 == curr_div:
+    while less_than(s2, curr_div) or is_equal(s2, curr_div):
         i = 0
-        while less_than(s2, curr_div) or s2 == curr_div:
+        while less_than(s2, curr_div) or is_equal(s2, curr_div):
             curr_div = l_sub(curr_div, s2)
             i += 1
         s3 += str(i)

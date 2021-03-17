@@ -125,6 +125,25 @@ class BigInt:
         result = l_root(self.value, other.value)
         return BigInt(result)
 
+    @staticmethod
+    def gcd(a, b):
+        if a.value == '0':
+            return b
+        if b.value == '0':
+            return a
+        a = BigInt(a.value)
+        b = BigInt(b.value)
+        zero, one = BigInt('0'), BigInt('1')
+        r, old_r = a, b
+        s, old_s = zero, one
+        t, old_t = one, zero
+        while r:
+            q = old_r / r
+            old_r, r = r, old_r - q * r
+            old_s, s = s, old_s - q * s
+            old_t, t = t, old_t - q * t
+        return old_r, old_t, old_s
+
 
 if __name__ == '__main__':
     x = BigInt(input('Введите первое число (x): '))

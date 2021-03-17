@@ -1,3 +1,4 @@
+import math
 import unittest
 from random import randint
 
@@ -122,6 +123,18 @@ class TestBigInt(unittest.TestCase):
             big_x = BigInt(str(x))
             big_y = BigInt(str(y))
             self.assertEqual(int(x ** (1 / y)), big_x.root(big_y))
+
+    def test_gcd(self):
+        for _ in range(10000):
+            x = randint(0, 10 ** 20)
+            y = randint(0, 10 ** 20)
+            big_x = BigInt(str(x))
+            big_y = BigInt(str(y))
+            d, big_u, big_v = BigInt.gcd(big_x, big_y)
+            u = int(('-' if big_u.is_neg else '') + big_u.value)
+            v = int(('-' if big_v.is_neg else '') + big_v.value)
+            self.assertEqual(str(math.gcd(x, y)), d.value)
+            self.assertEqual(str(u*x + v*y), d.value)
 
 
 if __name__ == '__main__':
