@@ -1,4 +1,5 @@
-from long_math import dec_to_bin, l_add, l_divmod, l_mul, l_pow, l_root, l_sub
+from long_math import (dec_to_bin, is_even, l_add, l_divmod, l_mul, l_pow,
+                       l_root, l_sub)
 
 
 class BigInt:
@@ -144,6 +145,45 @@ class BigInt:
             old_s, s = s, old_s - q * s
             old_t, t = t, old_t - q * t
         return old_r, old_t, old_s
+
+    @staticmethod
+    def bin_gcd(a, b):
+        a = BigInt(a.value)
+        b = BigInt(b.value)
+        zero, one, two = BigInt('0'), BigInt('1'), BigInt('2')
+        g = one
+        while is_even(a.value) and is_even(b.value):
+            a /= two
+            b /= two
+            g *= two
+        x, y = a, b
+        A, B, C, D = one, zero, zero, one
+        while x:
+            while is_even(x.value):
+                x /= two
+                if is_even(A.value) and is_even(B.value):
+                    A /= two
+                    B /= two
+                else:
+                    A = (A + b) / two
+                    B = (B - a) / two
+            while is_even(y.value):
+                y /= two
+                if is_even(C.value) and is_even(D.value):
+                    C /= two
+                    D /= two
+                else:
+                    C = (C + b) / two
+                    D = (D - a) / two
+            if x < y:
+                y -= x
+                C -= A
+                D -= B
+            else:
+                x -= y
+                A -= C
+                B -= D
+        return g * y, C, D
 
     @staticmethod
     def ring_add(x, y, n):

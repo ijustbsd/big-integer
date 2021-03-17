@@ -32,6 +32,10 @@ def is_equal(s1: str, s2: str) -> bool:
     return s1 == s2
 
 
+def is_even(s1: str) -> bool:
+    return not int(s1[-1]) % 2
+
+
 def l_add(s1: str, s2: str) -> str:
     l1 = len(s1)
     l2 = len(s2)
