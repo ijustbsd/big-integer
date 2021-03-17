@@ -1,4 +1,4 @@
-from long_math import l_add, l_divmod, l_mul, l_pow, l_root, l_sub
+from long_math import dec_to_bin, l_add, l_divmod, l_mul, l_pow, l_root, l_sub
 
 
 class BigInt:
@@ -144,6 +144,58 @@ class BigInt:
             old_s, s = s, old_s - q * s
             old_t, t = t, old_t - q * t
         return old_r, old_t, old_s
+
+    @staticmethod
+    def ring_add(x, y, n):
+        r1 = x % n
+        r2 = y % n
+        z = r1 + r2
+        if z >= n:
+            z -= n
+        return z
+
+    @staticmethod
+    def ring_sub(x, y, n):
+        r1 = x % n
+        r2 = y % n
+        z = r1 - r2
+        if z < BigInt('0'):
+            z += n
+        return z
+
+    @staticmethod
+    def ring_mul(x, y, n):
+        r1 = x % n
+        r2 = y % n
+        z = r1 * r2
+        return z % n
+
+    @staticmethod
+    def ring_inv(x, n):
+        d, v, u = BigInt.gcd(x, n)
+        if d != BigInt('1'):
+            return None
+        zero = BigInt('0')
+        while True:
+            if u > n:
+                u -= n
+            if u < zero:
+                u += n
+            if zero < u < n:
+                break
+        return u
+
+    @staticmethod
+    def ring_pow(x, m, n):
+        if m.value == '0':
+            return BigInt('1')
+        b = dec_to_bin(m.value)
+        z = x % n
+        for i in range(1, len(b)):
+            z = (z * z) % n
+            if b[i] == '1':
+                z = (z * x) % n
+        return z
 
 
 if __name__ == '__main__':

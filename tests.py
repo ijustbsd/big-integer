@@ -136,6 +136,65 @@ class TestBigInt(unittest.TestCase):
             self.assertEqual(str(math.gcd(x, y)), d.value)
             self.assertEqual(str(u*x + v*y), d.value)
 
+    def test_ring_add(self):
+        values = [
+            ('3', '4', '5', '2'),
+            ('12345678', '87654321', '123', '15'),
+            ('12345678', '0', '987', '282'),
+            ('0', '12345678', '987', '282'),
+            ('9999999999', '9999999999', '9999999999', '0')
+        ]
+        for args in values:
+            args = list(map(BigInt, args))
+            self.assertEqual(BigInt.ring_add(*args[:3]), args[3])
+
+    def test_ring_sub(self):
+        values = [
+            ('3', '4', '5', '4'),
+            ('12345678', '87654321', '123', '75'),
+            ('12345678', '0', '987', '282'),
+            ('0', '12345678', '987', '705'),
+            ('9999999999', '9999999999', '9999999999', '0')
+        ]
+        for args in values:
+            args = list(map(BigInt, args))
+            self.assertEqual(BigInt.ring_sub(*args[:3]), args[3])
+
+    def test_ring_mul(self):
+        values = [
+            ('3', '4', '5', '2'),
+            ('12345678', '87654321', '123', '3'),
+            ('12345678', '0', '987', '0'),
+            ('0', '12345678', '987', '0'),
+            ('9999999999', '9999999999', '9999999999', '0')
+        ]
+        for args in values:
+            args = list(map(BigInt, args))
+            self.assertEqual(BigInt.ring_mul(*args[:3]), args[3])
+
+    def test_ring_inv(self):
+        values = [
+            ('873372847093', str(10 ** 12), '94559444997'),
+            ('6', '3', None),
+        ]
+        for *args, x in values:
+            args = list(map(BigInt, args))
+            if isinstance(x, str):
+                x = BigInt(x)
+            self.assertEqual(BigInt.ring_inv(*args[:2]), x)
+
+    def test_ring_pow(self):
+        values = [
+            ('3', '4', '5', '1'),
+            ('18', '50', '873372847093', '194798095869'),
+            ('12345678', '0', '987', '1'),
+            ('0', '12345678', '987', '0'),
+            ('999', '999', '999', '0')
+        ]
+        for args in values:
+            args = list(map(BigInt, args))
+            self.assertEqual(BigInt.ring_pow(*args[:3]), args[3])
+
 
 if __name__ == '__main__':
     unittest.main()
