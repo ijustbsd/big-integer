@@ -122,7 +122,7 @@ class TestBigInt(unittest.TestCase):
             y = randint(1, 100)
             big_x = BigInt(str(x))
             big_y = BigInt(str(y))
-            self.assertEqual(int(x ** (1 / y)), big_x.root(big_y))
+            self.assertEqual(int(x ** (1 / y)), BigInt.root(big_x, big_y))
 
     def test_gcd(self):
         for _ in range(10000):

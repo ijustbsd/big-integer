@@ -121,8 +121,9 @@ class BigInt:
             return BigInt(('-' if self.is_neg else '') + result)
         return BigInt(result)
 
-    def root(self, other):
-        result = l_root(self.value, other.value)
+    @staticmethod
+    def root(a, b):
+        result = l_root(a.value, b.value)
         return BigInt(result)
 
     @staticmethod
