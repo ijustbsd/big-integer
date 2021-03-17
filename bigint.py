@@ -199,18 +199,34 @@ class BigInt:
 
 
 if __name__ == '__main__':
-    x = BigInt(input('Введите первое число (x): '))
-    y = BigInt(input('Введите второе число (y): '))
     menu_text = '\n'.join([
-        'Выберите действие:',
+        'Выберите операцию:',
         '1) x + y',
         '2) x - y',
         '3) x * y',
         '4) x / y',
-        '5) x mod y'
+        '5) x mod y',
+        '6) x ^ y',
+        '7) Корень из X степени Y',
+        '8) НОД(x, y)',
+        '9) (x + y) mod N',
+        '10) (x - y) mod N',
+        '11) (x * y) mod N',
+        '12) x^(-1) mod N',
+        '13) x^y mod N',
     ])
     print(menu_text)
-    choice = input()
+    choice = input('Введите номер операции: ')
+
+    if int(choice) < 1 or int(choice) > 13:
+        print('Выбрано несуществующее значение :(')
+
+    x = BigInt(input('Введите первое число (x): '))
+    if choice != '12':
+        y = BigInt(input('Введите второе число (y): '))
+    if 9 <= int(choice) <= 13:
+        n = BigInt(input('Введите модуль (N): '))
+
     if choice == '1':
         print('x + y =', x + y)
     elif choice == '2':
@@ -221,7 +237,25 @@ if __name__ == '__main__':
         print('x / y =', x / y)
     elif choice == '5':
         print('x mod y =', x % y)
-    else:
-        print('Выбрано несуществующее значение :(')
+    elif choice == '6':
+        print('x ^ y =', x ** y)
+    elif choice == '7':
+        print('Корень из X степени Y = ', BigInt.root(x, y))
+    elif choice == '8':
+        print('НОД(x, y) =', BigInt.gcd(x, y))
+    elif choice == '9':
+        print('(x + y) mod N =', BigInt.ring_add(x, y, n))
+    elif choice == '10':
+        print('(x - y) mod N =', BigInt.ring_sub(x, y, n))
+    elif choice == '11':
+        print('(x * y) mod N =', BigInt.ring_mul(x, y, n))
+    elif choice == '12':
+        inv = BigInt.ring_inv(x, n)
+        if inv is None:
+            print(f'Обратный элемент числа {x} по модулю {n} не существует!')
+        else:
+            print('x^(-1) mod N =', BigInt.ring_inv(x, n))
+    elif choice == '13':
+        print('x^y mod N =', BigInt.ring_pow(x, y, n))
 
     input('Для выхода нажмите Enter...')
