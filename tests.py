@@ -136,6 +136,18 @@ class TestBigInt(unittest.TestCase):
             self.assertEqual(str(math.gcd(x, y)), d.value)
             self.assertEqual(str(u*x + v*y), d.value)
 
+    def test_lsbgcd(self):
+        for _ in range(1000):
+            x = randint(0, 10 ** 20)
+            y = randint(0, 10 ** 20)
+            big_x = BigInt(str(x))
+            big_y = BigInt(str(y))
+            d, big_u, big_v = BigInt.lsbgcd(big_x, big_y)
+            u = int(('-' if big_u.is_neg else '') + big_u.value)
+            v = int(('-' if big_v.is_neg else '') + big_v.value)
+            self.assertEqual(str(math.gcd(x, y)), d.value)
+            self.assertEqual(str(u*x + v*y), d.value)
+
     def test_ring_add(self):
         values = [
             ('3', '4', '5', '2'),

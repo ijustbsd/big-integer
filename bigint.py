@@ -186,6 +186,55 @@ class BigInt:
         return g * y, C, D
 
     @staticmethod
+    def lsbgcd(a, b):
+        a = BigInt(a.value)
+        b = BigInt(b.value)
+        is_swap = False
+        if b > a:
+            a, b = b, a
+            is_swap = True
+        zero, one, two = BigInt('0'), BigInt('1'), BigInt('2')
+        x, y = a, b
+        A, B, C, D = one, zero, zero, one
+        log2_10 = BigInt('3')
+        n = log2_10 * BigInt(str(len(y)))
+        while y:
+            two_n = two ** n
+            left = two_n * y
+            right = two_n * two * y
+            while True:
+                if left <= x < right:
+                    break
+                if x < left:
+                    n -= one
+                if x >= right:
+                    n += one
+                two_n = two ** n
+                left = two_n * y
+                right = two_n * two * y
+            s = x - left
+            p = right - x
+            if s <= p:
+                t = s
+                At = A - two_n * C
+                Bt = B - two_n * D
+            else:
+                t = p
+                At = two_n * two * C - A
+                Bt = two_n * two * D - B
+            if t <= y:
+                x = y
+                y = t
+                A, B, C, D = C, D, At, Bt
+            else:
+                x = t
+                A = At
+                B = Bt
+        if is_swap:
+            return x, B, A  # d, v, u
+        return x, A, B  # d, u, v
+
+    @staticmethod
     def ring_add(x, y, n):
         r1 = x % n
         r2 = y % n
@@ -214,7 +263,7 @@ class BigInt:
     def ring_inv(x, n):
         if x.value == '1':
             return x
-        d, v, u = BigInt.gcd(x, n)
+        d, v, u = BigInt.lsbgcd(x, n)
         if d != BigInt('1'):
             return None
         zero = BigInt('0')
@@ -286,7 +335,7 @@ if __name__ == '__main__':
     elif choice == '7':
         print('Корень из X степени Y = ', BigInt.root(x, y))
     elif choice == '8':
-        print('НОД(x, y), u, v =', *BigInt.gcd(x, y))
+        print('НОД(x, y), u, v =', *BigInt.lsbgcd(x, y))
     elif choice == '9':
         print('(x + y) mod N =', BigInt.ring_add(x, y, n))
     elif choice == '10':
